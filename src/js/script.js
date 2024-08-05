@@ -98,3 +98,11 @@ boxPreLocation.forEach(Location => {
     })
 })
 
+const fetchImages = async () => {
+  const response = await fetch('https://api.unsplash.com/photos?client_id=krhNpVZ0DXS1FfJIj4HO6nkEMZiuTan4arHqaXh3er4');
+  const data = await response.json();
+  console.log(data);
+
+//   curl "https://api.unsplash.com/search/photos?query=your_search_term&client_id=YOUR_ACCESS_KEY"
+};
+
