@@ -1,4 +1,5 @@
 const apiKey = "735c5dbe0e335e47fd925e80875c0b61";
+const unsplashApiKey = 'krhNpVZ0DXS1FfJIj4HO6nkEMZiuTan4arHqaXh3er4';
 
 const inputCity = document.querySelector('#inputCity');
 const btnInput = document.querySelector('#btnInputCity');
@@ -14,6 +15,24 @@ const flag = document.querySelector('#flag');
 const iconDescription = document.querySelector('#iconDescription')
 
 const boxPreLocation = document.querySelectorAll('.boxPreLocation');
+
+async function pegarImgBackground() {
+    try {
+        const apiUnsplash = await fetch(`https://api.unsplash.com/search/photos?query=${inputCity.value}&client_id=${unsplashApiKey}&orientation=landscape&per_page=1`);
+        const dataunsplash = await apiUnsplash.json();
+
+        console.log(dataunsplash);
+
+        if (dataunsplash.results && dataunsplash.results.length > 0) {
+            const imageUrl = dataunsplash.results[0].urls.regular;
+            document.body.style.backgroundImage = `url(${imageUrl})`;
+        } else {
+            console.log('Nenhuma imagem encontrada');
+        }
+    } catch (error) {
+        console.error('Não foi possível conectar a Api Unsplash', error);
+    }
+}
 
 
 btnInput.addEventListener('click', async function(e) {
@@ -45,6 +64,9 @@ btnInput.addEventListener('click', async function(e) {
             windyVelocity.textContent = converteApi.wind.speed.toFixed(0) + ' Km/h';
             humidity.textContent = converteApi.main.humidity + '%';
 
+            //trocar backgroudn
+            pegarImgBackground();
+
             //trocar iconDescription
             const changeIconDescription = converteApi.weather[0].icon;
             iconDescription.src = `https://openweathermap.org/img/wn/${changeIconDescription}@2x.png`
@@ -54,6 +76,8 @@ btnInput.addEventListener('click', async function(e) {
         elementPesquisa.style.display = 'none';
     }
 })
+
+
 
 boxPreLocation.forEach(Location => {
     Location.addEventListener('click', async function(e) {
@@ -88,6 +112,9 @@ boxPreLocation.forEach(Location => {
             windyVelocity.textContent = converteApi.wind.speed.toFixed(0) + ' Km/h';
             humidity.textContent = converteApi.main.humidity + '%';
 
+            //trocar backgroudn
+            pegarImgBackground();
+
             //trocar iconDescription
             const changeIconDescription = converteApi.weather[0].icon;
             iconDescription.src = `https://openweathermap.org/img/wn/${changeIconDescription}@2x.png`
@@ -98,11 +125,4 @@ boxPreLocation.forEach(Location => {
     })
 })
 
-const fetchImages = async () => {
-  const response = await fetch('https://api.unsplash.com/photos?client_id=krhNpVZ0DXS1FfJIj4HO6nkEMZiuTan4arHqaXh3er4');
-  const data = await response.json();
-  console.log(data);
-
-//   curl "https://api.unsplash.com/search/photos?query=your_search_term&client_id=YOUR_ACCESS_KEY"
-};
 
