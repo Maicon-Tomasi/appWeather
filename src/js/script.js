@@ -16,12 +16,10 @@ const iconDescription = document.querySelector('#iconDescription')
 
 const boxPreLocation = document.querySelectorAll('.boxPreLocation');
 
-async function pegarImgBackground() {
+async function pegarImgBackground(nameCity) {
     try {
-        const apiUnsplash = await fetch(`https://api.unsplash.com/search/photos?query=${inputCity.value}&client_id=${unsplashApiKey}&orientation=landscape&per_page=1`);
+        const apiUnsplash = await fetch(`https://api.unsplash.com/search/photos?query=${nameCity}&client_id=${unsplashApiKey}&orientation=landscape&per_page=1`);
         const dataunsplash = await apiUnsplash.json();
-
-        console.log(dataunsplash);
 
         if (dataunsplash.results && dataunsplash.results.length > 0) {
             const imageUrl = dataunsplash.results[0].urls.regular;
@@ -65,7 +63,7 @@ btnInput.addEventListener('click', async function(e) {
             humidity.textContent = converteApi.main.humidity + '%';
 
             //trocar backgroudn
-            pegarImgBackground();
+            pegarImgBackground(inputCity.value);
 
             //trocar iconDescription
             const changeIconDescription = converteApi.weather[0].icon;
@@ -113,7 +111,7 @@ boxPreLocation.forEach(Location => {
             humidity.textContent = converteApi.main.humidity + '%';
 
             //trocar backgroudn
-            pegarImgBackground();
+            pegarImgBackground(cityName);
 
             //trocar iconDescription
             const changeIconDescription = converteApi.weather[0].icon;
